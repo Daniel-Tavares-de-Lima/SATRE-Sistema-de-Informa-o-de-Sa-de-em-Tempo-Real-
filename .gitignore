@@ -1,0 +1,34 @@
+# Dependências
+node_modules/
+
+# Build/compilado
+dist/
+build/
+
+# Variáveis de ambiente 
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+*.log
+
+# Editor
+.vscode/
+.idea/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Expo
+.expo/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# TypeScript
+*.tsbuildinfo
