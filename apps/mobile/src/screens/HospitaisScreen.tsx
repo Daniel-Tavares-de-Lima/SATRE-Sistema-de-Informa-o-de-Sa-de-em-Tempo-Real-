@@ -10,6 +10,10 @@ interface Unit{
     doctorsAvailable: number;
 }
 
+//Objetivo é fazer com que as buscas ignorem os acentos
+function normalize(text: string): string{
+    return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+}
 export default function HospitaisScreen(){
     const [units, setUnits] = useState<Unit[]>([]); //hospitais carregados da API
     const [search, setSearch] = useState(''); // texto de pesquisa  
@@ -20,7 +24,7 @@ export default function HospitaisScreen(){
         getUnits().then(setUnits).catch(() => setError(true)).finally(() => setLoading(false));
     }, []);
 
-    const filtered = units.filter((unit) => unit.name.toLowerCase().includes(search.toLowerCase()));
+    const filtered = units.filter((unit) => normalize(unit.name).includes(normalize(search)));
 
     //-- early return
     if(loading){
