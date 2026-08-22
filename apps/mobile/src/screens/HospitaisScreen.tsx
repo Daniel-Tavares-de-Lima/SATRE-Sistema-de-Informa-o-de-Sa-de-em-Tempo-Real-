@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TextInput, FlatList } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TextInput, FlatList, Pressable } from 'react-native';
 import { getUnits } from '../services/api';
+import { useNavigation } from '@react-navigation/native';
+
 
 interface Unit{
     id: string;
@@ -19,6 +21,7 @@ export default function HospitaisScreen(){
     const [search, setSearch] = useState(''); // texto de pesquisa  
     const [loading, setLoading] = useState(false); // carregamento  
     const [error, setError] = useState(false); // erro de carregamento
+    const navigation = useNavigation();
 
     useEffect(() => {
         getUnits().then(setUnits).catch(() => setError(true)).finally(() => setLoading(false));
@@ -57,12 +60,14 @@ export default function HospitaisScreen(){
         contentContainerStyle={styles.list}
         ListEmptyComponent={<Text style={styles.empty}>Nenhuma unidade encontrada</Text>}
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.type}>{item.type === 'upa' ? 'UPA' : 'Instituição Privada'}</Text>
-            <Text>Espera estimada: {item.waitEstimateMinutes} min</Text>
-            <Text>Médicos disponíveis: {item.doctorsAvailable}</Text>
-          </View>
+          <Pressable onPress={() => navigation.navigate('Detalhe', { unitId: item.id })}>
+            <View style={styles.card}>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.type}>{item.type === 'upa' ? 'UPA' : 'Instituição Privada'}</Text>
+              <Text>Espera estimada: {item.waitEstimateMinutes} min</Text>
+              <Text>Médicos disponíveis: {item.doctorsAvailable}</Text>
+            </View>
+          </Pressable>
         )}
       />
     </View>
